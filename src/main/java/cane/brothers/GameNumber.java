@@ -19,10 +19,10 @@ public class GameNumber extends AbstractGuessNumber {
      * @return
      */
     public static boolean isGuess(int[] digits) {
-        return (digits == null && isUnique(digits) && isAllDigits(digits));
+        return (digits != null && isUnique(digits) && isAllDigits(digits));
     }
 
-    private static boolean isAllDigits(int[] array) {
+    protected static boolean isAllDigits(int[] array) {
         for (int i = 0; i < array.length; i++) {
             char digit = (char) (array[i] + '0');
 
@@ -33,14 +33,14 @@ public class GameNumber extends AbstractGuessNumber {
         return true;
     }
 
-    private static boolean isUnique(int[] array) {
+    protected static boolean isUnique(int[] array) {
         for (int j = 0; j < array.length; j++) {
             int a = array[j];
 
             for (int i = 0; i < j; i++) {
                 if (a == array[i]) {
                     // seen this int before
-                    return true;
+                    return false;
                 }
             }
         }

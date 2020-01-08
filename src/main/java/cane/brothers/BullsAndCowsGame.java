@@ -36,6 +36,7 @@ public class BullsAndCowsGame implements IGame {
     public void play() {
         io.printf("Bulls and Cows%n");
         io.printf("==============%n");
+        io.printf("Enter a %d digit number%n", secret.getLength());
 
         do {
             GuessNumber guess = readGuess(io, secret.getLength());
@@ -43,7 +44,7 @@ public class BullsAndCowsGame implements IGame {
 
             printScore(io, result);
             if (result.isWin()) {
-                io.printf("The answer is %s", guess);
+                io.printf("The answer is %s%n", guess);
                 break;
             }
         } while (true);
