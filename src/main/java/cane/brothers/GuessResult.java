@@ -44,4 +44,14 @@ public class GuessResult {
     public int getId() {
         return guessNum;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GuessResult that = (GuessResult) o;
+        return bulls == that.bulls &&
+                cows == that.cows &&
+                length == that.length;
+    }
 }

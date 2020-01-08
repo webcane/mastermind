@@ -1,5 +1,6 @@
 package cane.brothers;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -75,24 +76,8 @@ public class GameNumber extends AbstractGuessNumber {
         return arr;
     }
 
-    public GuessResult match(GuessNumber guessable) {
-        int bulls = 0;
-        int cows = 0;
-
-        if (guessable != null) {
-            for (int i = 0; i < this.getLength(); i++) {
-                for (int j = 0; j < guessable.getLength(); j++) {
-
-                    if (digits[i] == guessable.getDigits()[j]) {
-                        if (i == j) {
-                            bulls++;
-                        } else {
-                            cows++;
-                        }
-                    }
-                }
-            }
-        }
-        return new GuessResult(getLength(), bulls, cows);
+    @Override
+    public String toString() {
+        return Arrays.toString(digits);
     }
 }
