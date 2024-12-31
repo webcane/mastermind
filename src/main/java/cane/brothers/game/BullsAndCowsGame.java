@@ -1,4 +1,4 @@
-package cane.brothers;
+package cane.brothers.game;
 
 import console.TextDevice;
 import console.TextDevices;
@@ -9,38 +9,36 @@ import console.TextDevices;
 public class BullsAndCowsGame implements IGame {
 
     private final TextDevice io;
-    private final GameNumber secret;
+    private final IGameFactory gameFactory;
 
     /**
      * Constructor
      *
-     * @param secret
-     * @param io
+     * @param gameFactory game factory
+     * @param io text device
      */
-    public BullsAndCowsGame(GameNumber secret, TextDevice io) {
-        this.secret = secret;
+    public BullsAndCowsGame(IGameFactory gameFactory, TextDevice io) {
+        this.gameFactory = gameFactory;
         this.io = io;
     }
 
-    private static void printScore(TextDevice io, GuessResult result) {
-        //console.printf("Score %1$d\n", num);
-        //console.printf("Bulls=%1$d Cows=%2$d\n", bulls, cows);
+    private static void printScore(TextDevice io, IResultNumber result) {
         io.printf("How many bulls and cows?%n");
         io.printf("%1$d  %2$d%n", result.getBulls(), result.getCows());
     }
 
     public static void main(String[] args) {
-        new BullsAndCowsGame(new GameNumber(), TextDevices.defaultTextDevice()).play();
+        new BullsAndCowsGame(new GameNumberFactory(4), TextDevices.defaultTextDevice()).play();
     }
 
     public void play() {
         io.printf("Bulls and Cows%n");
         io.printf("==============%n");
-        io.printf("Enter a %d digit number%n", secret.getLength());
+        io.printf("Enter a %d digit number%n", gameFactory.getLength());
 
         do {
-            GuessNumber guess = readGuess(io, secret.getLength());
-            GuessResult result = secret.match(guess);
+            IGuessNumber guess = readGuess(io);
+            IResultNumber result = gameFactory.getResult(guess);
 
             printScore(io, result);
             if (result.isWin()) {
@@ -50,13 +48,13 @@ public class BullsAndCowsGame implements IGame {
         } while (true);
     }
 
-    private GuessNumber readGuess(TextDevice io, int length) {
+    private IGuessNumber readGuess(TextDevice io) {
         do {
             String input = io.readLine();
             checkForExit(input);
 
             io.printf("My guess is %s%n", input);
-            GuessNumber guess = new GuessNumber(input, length);
+            IGuessNumber guess = this.gameFactory.getGuess(input);
             if (guess.isValid()) return guess;
         } while (true);
     }

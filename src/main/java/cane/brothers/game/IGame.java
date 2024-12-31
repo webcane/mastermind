@@ -1,8 +1,8 @@
-package cane.brothers;
+package cane.brothers.game;
 
 /**
  * Created by cane.
  */
 public interface IGame {
-    public void play();
+    void play();
 }

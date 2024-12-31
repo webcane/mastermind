@@ -1,30 +1,31 @@
-package cane.brothers;
+package cane.brothers.game;
 
 import java.util.Random;
 
 /**
  * Created by cane.
  */
-public class GameNumber extends AbstractGuessNumber {
+class SecretNumber extends AbstractGuessNumber implements ISecretNumber {
 
-    public GameNumber() {
-        super(4);
+
+    SecretNumber(int length) {
+        super(length);
         defineNumber();
     }
 
     /**
-     * // only unique digits are allowed
+     * only unique digits are allowed
      *
-     * @param digits
-     * @return
+     * @param digits number
+     * @return boolean
      */
-    public static boolean isGuess(int[] digits) {
+    static boolean isGuess(int[] digits) {
         return (digits != null && isUnique(digits) && isAllDigits(digits));
     }
 
-    protected static boolean isAllDigits(int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            char digit = (char) (array[i] + '0');
+    static boolean isAllDigits(int[] array) {
+        for (int j : array) {
+            char digit = (char) (j + '0');
 
             if (!Character.isDigit(digit)) {
                 return false;
@@ -33,7 +34,7 @@ public class GameNumber extends AbstractGuessNumber {
         return true;
     }
 
-    protected static boolean isUnique(int[] array) {
+    static boolean isUnique(int[] array) {
         for (int j = 0; j < array.length; j++) {
             int a = array[j];
 
@@ -47,7 +48,7 @@ public class GameNumber extends AbstractGuessNumber {
         return true;
     }
 
-    public static int[] parseDigits(int number, int length) {
+    static int[] parseDigits(int number, int length) {
         int[] arr = new int[length];
         int temp = number;
         for (int i = length - 1; i >= 0; i--) {
@@ -57,25 +58,13 @@ public class GameNumber extends AbstractGuessNumber {
         return arr;
     }
 
+    @Override
     protected void defineNumber() {
-        int[] arr = generateRandom();
-
-        for (int i = 0; i < getLength(); i++) {
-            digits[i] = arr[i];
-        }
+        digits = generateRandom();
     }
 
-    private int[] generateRandom() {
-        int[] arr;
-        do {
-            Random random = new Random();
-            int number = random.nextInt(9877) + 123;
-            arr = parseDigits(number, getLength());
-        } while (!isGuess(arr));
-        return arr;
-    }
-
-    public GuessResult match(GuessNumber guessable) {
+    @Override
+    public IResultNumber match(IGuessNumber guessable) {
         int bulls = 0;
         int cows = 0;
 
@@ -94,5 +83,20 @@ public class GameNumber extends AbstractGuessNumber {
             }
         }
         return new GuessResult(getLength(), bulls, cows);
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
+    private int[] generateRandom() {
+        int[] arr;
+        do {
+            Random random = new Random();
+            int number = random.nextInt(9877) + 123;
+            arr = parseDigits(number, getLength());
+        } while (!isGuess(arr));
+        return arr;
     }
 }
