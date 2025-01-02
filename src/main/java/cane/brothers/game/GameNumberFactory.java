@@ -11,6 +11,11 @@ public class GameNumberFactory implements IGameFactory {
     }
 
     @Override
+    public ISecretNumber getSecret() {
+        return this.secret;
+    }
+
+    @Override
     public IGuessNumber getGuess(String number) {
         return new GuessNumber(number, this.length);
     }
