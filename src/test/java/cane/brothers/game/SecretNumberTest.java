@@ -1,5 +1,6 @@
 package cane.brothers.game;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,47 +10,41 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class SecretNumberTest {
 
-    @Test
-    public void test_parseDigits() {
-        int[] result = SecretNumber.parseDigits(1234, 4);
-        int[] expected = new int[]{1, 2, 3, 4};
-        assertArrayEquals(expected, result);
+    @Nested
+    class TestBulls {
+        @Test
+        public void test_match_all_bulls() {
+            SecretNumber secret = new SecretNumber(new AnswerNumberProvider(new int[]{1, 2, 3, 4}));
+            IGuessNumber guess = new GuessNumber(new GuessNumberProvider("1234", 4));
+            var result = secret.match(guess);
+            assertEquals(result.bulls(), 4);
+        }
+
+        @Test
+        public void test_match_no_bulls() {
+            SecretNumber secret = new SecretNumber(new AnswerNumberProvider(new int[]{9, 8, 7, 6}));
+            IGuessNumber guess = new GuessNumber(new GuessNumberProvider("1234", 4));
+            var result = secret.match(guess);
+            assertEquals(result.bulls(), 0);
+        }
     }
 
-    @Test
-    public void test_isUnique() {
-        int[] data = new int[]{1, 2, 3, 4};
-        boolean result = SecretNumber.isUnique(data);
-        assertTrue(result);
+    @Nested
+    class TestCows {
+        @Test
+        public void test_match_all_cows() {
+            SecretNumber secret = new SecretNumber(new AnswerNumberProvider(new int[]{1, 2, 3, 4}));
+            IGuessNumber guess = new GuessNumber(new GuessNumberProvider("4321", 4));
+            var result = secret.match(guess);
+            assertEquals(result.cows(), 4);
+        }
 
-        data = new int[]{6, 1, 3, 6};
-        result = SecretNumber.isUnique(data);
-        assertFalse(result);
+        @Test
+        public void test_match_no_cows() {
+            SecretNumber secret = new SecretNumber(new AnswerNumberProvider(new int[]{9, 8, 7, 6}));
+            IGuessNumber guess = new GuessNumber(new GuessNumberProvider("1234", 4));
+            var result = secret.match(guess);
+            assertEquals(result.cows(), 0);
+        }
     }
-
-    @Test
-    public void test_isAllDigits() {
-        int[] data = new int[]{1, 2, 3, 4};
-        boolean result = SecretNumber.isAllDigits(data);
-        assertTrue(result);
-
-        data = new int[]{11, 12, 13, 14};
-        result = SecretNumber.isAllDigits(data);
-        assertFalse(result);
-
-        data = new int[]{1, 2, 3, 0xA};
-        result = SecretNumber.isAllDigits(data);
-        assertFalse(result);
-    }
-
-    @Test
-    public void test_isGuess() {
-        int[] data = new int[]{1, 2, 3, 4};
-        boolean result = SecretNumber.isGuess(data);
-        assertTrue(result);
-
-        result = SecretNumber.isGuess(null);
-        assertFalse(result);
-    }
-
 }
