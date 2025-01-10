@@ -4,8 +4,12 @@ import java.util.LinkedList;
 
 public class StoredGuessGameNumberFactory extends GuessGameNumberFactory implements IStoredGuessGameFactory {
 
-    private final LinkedList<IGuessTurn> turns;
+    private final LinkedList<IGuessTurn> turns = new LinkedList<>();
 
+
+    public StoredGuessGameNumberFactory(int complexity) throws GuessComplexityException {
+        super(complexity);
+    }
 
     /**
      * Constructor
@@ -13,9 +17,8 @@ public class StoredGuessGameNumberFactory extends GuessGameNumberFactory impleme
      * @param secretAnswer not null secret
      */
     public StoredGuessGameNumberFactory(int[] secretAnswer) throws GuessComplexityException {
-        super(secretAnswer.length);
+        this(secretAnswer.length);
         this.secret = new SecretNumber(new AnswerNumberProvider(secretAnswer));
-        this.turns = new LinkedList<>();
     }
 
     @Override

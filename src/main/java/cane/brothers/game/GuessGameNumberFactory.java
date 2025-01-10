@@ -9,7 +9,7 @@ public class GuessGameNumberFactory implements IGuessGameFactory, IGameNumber {
 
     public GuessGameNumberFactory(int complexity) throws GuessComplexityException {
         setComplexity(complexity);
-        setSecret(complexity);
+        this.secret = new SecretNumber(new SecretNumberProvider(complexity));
     }
 
     @Override
@@ -33,10 +33,6 @@ public class GuessGameNumberFactory implements IGuessGameFactory, IGameNumber {
         } else {
             throw new GuessTurnException("Invalid guess format. Try again");
         }
-    }
-
-    protected void setSecret(int complexity) {
-        this.secret = new SecretNumber(new SecretNumberProvider(complexity));
     }
 
     protected void setComplexity(int complexity) throws GuessComplexityException {

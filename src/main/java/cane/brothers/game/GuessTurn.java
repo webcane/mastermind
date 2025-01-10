@@ -39,6 +39,6 @@ class GuessTurn implements IGuessTurn {
 
     @Override
     public String toString() {
-        return String.format("bulls=%d, cows=%d", bulls, cows);
+        return isWin() ? String.format("%s", guess) : String.format("%d bulls, %d cows", bulls, cows);
     }
 }
