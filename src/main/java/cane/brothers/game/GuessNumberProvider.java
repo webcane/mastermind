@@ -1,6 +1,6 @@
 package cane.brothers.game;
 
-public class GuessNumberProvider implements IGuessNumberProvider {
+class GuessNumberProvider implements IGuessNumberProvider {
 
     private final int complexity;
     private final String number;
@@ -27,7 +27,7 @@ public class GuessNumberProvider implements IGuessNumberProvider {
     }
 
     @Override
-    public int getComplexity() {
+    public int complexity() {
         return this.complexity;
     }
 }

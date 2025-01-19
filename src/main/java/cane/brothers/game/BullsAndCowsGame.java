@@ -6,7 +6,7 @@ import console.TextDevices;
 /**
  * Created by cane
  */
-public class BullsAndCowsGame implements IGame {
+class BullsAndCowsGame implements IGame {
 
     private final TextDevice io;
     private final IGuessGameFactory gameFactory;
@@ -17,7 +17,7 @@ public class BullsAndCowsGame implements IGame {
      * @param gameFactory game factory
      * @param io          text device
      */
-    public BullsAndCowsGame(IGuessGameFactory gameFactory, TextDevice io) {
+    BullsAndCowsGame(IGuessGameFactory gameFactory, TextDevice io) {
         this.gameFactory = gameFactory;
         this.io = io;
     }
@@ -34,7 +34,7 @@ public class BullsAndCowsGame implements IGame {
     public void play() {
         io.printf("Bulls and Cows%n");
         io.printf("==============%n");
-        io.printf("Enter a %d digit number: ", gameFactory.getComplexity());
+        io.printf("Enter a %d digit number: ", gameFactory.complexity());
 
         do {
             IGuessTurn guessTurn = makeTurn();
@@ -43,7 +43,7 @@ public class BullsAndCowsGame implements IGame {
                 io.printf("Win answer is %s%n", guessTurn);
                 break;
             }
-            io.printf("Make another turn: ");
+            io.printf("Make another guess: ");
         } while (true);
     }
 
@@ -52,7 +52,6 @@ public class BullsAndCowsGame implements IGame {
             String input = io.readLine();
             checkForExit(input);
 
-            // io.printf("My guess is %s%n", input);
             try {
                 IGuessTurn guessTurn = gameFactory.makeTurn(input);
                 if (guessTurn.isValid()) return guessTurn;
@@ -63,7 +62,6 @@ public class BullsAndCowsGame implements IGame {
     }
 
     private void printTurn(IGuessTurn guessTurn) {
-        // io.printf("How many bulls and cows?%n");
         io.printf("%1$s%n", guessTurn);
     }
 

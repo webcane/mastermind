@@ -1,10 +1,10 @@
 package cane.brothers.game;
 
-public class AnswerNumberProvider implements IGuessNumberProvider {
+class AnswerNumberProvider implements IGuessNumberProvider {
 
     private final int[] answer;
 
-    public AnswerNumberProvider(int[] answer) {
+    AnswerNumberProvider(int[] answer) {
         this.answer = answer;
     }
 
@@ -14,7 +14,7 @@ public class AnswerNumberProvider implements IGuessNumberProvider {
     }
 
     @Override
-    public int getComplexity() {
+    public int complexity() {
         return this.answer.length;
     }
 }

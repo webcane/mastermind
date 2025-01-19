@@ -1,30 +1,46 @@
 package cane.brothers.game;
 
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SecretNumberProviderTest {
 
     @Nested
-    class TestParseGuess {
+    class TestGet {
         @ParameterizedTest
         @ValueSource(ints = {1, 3, 4, 5})
-        void test_parseGuess(int input) {
+        void test_getRandomGuess(int input) {
             SecretNumberProvider secretProvider = new SecretNumberProvider(input);
-            var result = secretProvider.parseGuess();
-            assertEquals(result.length, input);
+            assertNotNull(secretProvider.get());
         }
 
         @ParameterizedTest
         @ValueSource(ints = {0, -1})
-        void test_parseGuess_neg(int input) {
+        void test_getRandomGuess_neg(int input) {
             SecretNumberProvider secretProvider = new SecretNumberProvider(input);
-            var result = secretProvider.parseGuess();
+            assertNull(secretProvider.get());
+        }
+    }
+
+    @Nested
+    class TestParseGuess {
+        @ParameterizedTest
+        @CsvSource({"1,4", "2,12", "3,123", "4,1234", "5,12345", "8,12345678"})
+        void test_parseGuess(int input, int expected) {
+            SecretNumberProvider secretProvider = new SecretNumberProvider(input);
+            var result = secretProvider.parseGuess(expected);
+            assertEquals(result.length, input);
+        }
+
+        @Test
+        void test_parseGuess_neg() {
+            SecretNumberProvider secretProvider = new SecretNumberProvider(0);
+            var result = secretProvider.parseGuess(0);
             assertNull(result);
         }
     }

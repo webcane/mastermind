@@ -11,7 +11,7 @@ import java.io.StringReader;
 /**
  * Created by cane
  */
-public class BullsAndCowsGameTest {
+class BullsAndCowsGameTest {
 
     @Test
     public void test_BullsAndCows_game() throws GuessComplexityException {

@@ -8,13 +8,30 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by cane
  */
-public class SecretNumberTest {
+class SecretNumberTest {
+
+    @Nested
+    class TestDefineRandomNumber {
+        @Test
+        public void test_defineNumber() {
+            SecretNumber secret = new SecretNumber(new SecretNumberProvider(4));
+            var result = secret.defineNumber(new AnswerNumberProvider(new int[]{1, 2, 3, 4}));
+            assertEquals(result.length, 4);
+        }
+
+        @Test
+        public void test_defineNumber_neg() {
+            SecretNumber secret = new SecretNumber(new SecretNumberProvider(4));
+            var result = secret.defineNumber(new AnswerNumberProvider(new int[]{1, 1, 1, 1}));
+            assertNull(result);
+        }
+    }
 
     @Nested
     class TestBulls {
         @Test
         public void test_match_all_bulls() {
-            SecretNumber secret = new SecretNumber(new AnswerNumberProvider(new int[]{1, 2, 3, 4}));
+            ISecretNumber secret = new SecretNumber(new AnswerNumberProvider(new int[]{1, 2, 3, 4}));
             IGuessNumber guess = new GuessNumber(new GuessNumberProvider("1234", 4));
             var result = secret.match(guess);
             assertEquals(result.bulls(), 4);

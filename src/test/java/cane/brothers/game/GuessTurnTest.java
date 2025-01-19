@@ -15,7 +15,7 @@ class GuessTurnTest {
             IGuessNumber guess = new GuessNumber(new GuessNumberProvider("1234", 4));
             IGuessResult guessResult = secret.match(guess);
             var result = new GuessTurn(guess, guessResult);
-            assertEquals(result.getComplexity(), 4);
+            assertEquals(result.complexity(), 4);
         }
     }
 

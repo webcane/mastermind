@@ -10,11 +10,13 @@ class SecretNumber extends AbstractGuessNumber implements ISecretNumber {
     }
 
     @Override
-    protected void defineNumber() {
-        int fuse = 5;
+    protected int[] defineNumber(IGuessNumberProvider numberProvider) {
+        int fuse = 10;
+        int[] temp;
         do {
-            this.digits = numberProvider.get();
-        } while (!isGuess() && --fuse > 0);
+            temp = numberProvider.get();
+        } while (!isGuess(temp) && --fuse > 0);
+        return fuse == 0 ? null: temp;
     }
 
     @Override
@@ -23,10 +25,10 @@ class SecretNumber extends AbstractGuessNumber implements ISecretNumber {
         int cows = 0;
 
         if (guessable != null) {
-            for (int i = 0; i < this.getComplexity(); i++) {
-                for (int j = 0; j < guessable.getComplexity(); j++) {
+            for (int i = 0; i < this.complexity(); i++) {
+                for (int j = 0; j < guessable.complexity(); j++) {
 
-                    if (digits[i] == guessable.getDigits()[j]) {
+                    if (getDigits()[i] == guessable.getDigits()[j]) {
                         if (i == j) {
                             bulls++;
                         } else {

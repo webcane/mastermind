@@ -6,7 +6,6 @@ public class StoredGuessGameNumberFactory extends GuessGameNumberFactory impleme
 
     private final LinkedList<IGuessTurn> turns = new LinkedList<>();
 
-
     public StoredGuessGameNumberFactory(int complexity) throws GuessComplexityException {
         super(complexity);
     }

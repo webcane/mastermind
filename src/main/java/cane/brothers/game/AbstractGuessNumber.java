@@ -7,36 +7,13 @@ import java.util.Arrays;
  */
 abstract class AbstractGuessNumber implements IGuessNumber {
 
-    protected int[] digits;
+    private final int[] digits;
 
-    protected IGuessNumberProvider numberProvider;
+    private final int complexity;
 
-    public AbstractGuessNumber(IGuessNumberProvider numberProvider) {
-        this.numberProvider = numberProvider;
-        defineNumber();
-    }
-
-    protected void defineNumber() {
-        this.digits = numberProvider.get();
-    }
-
-    @Override
-    public int[] getDigits() {
-        return digits;
-    }
-
-    /**
-     * only unique digits are allowed
-     *
-     * @return boolean
-     */
-    @Override
-    public boolean isValid() {
-        return isGuess() && this.digits != null && this.digits.length == getComplexity();
-    }
-
-    protected boolean isGuess() {
-        return isUnique(this.digits) && isAllDigits(this.digits);
+    AbstractGuessNumber(IGuessNumberProvider numberProvider) {
+        this.digits = defineNumber(numberProvider);
+        this.complexity = numberProvider.complexity();
     }
 
     static boolean isAllDigits(int[] array) {
@@ -70,13 +47,36 @@ abstract class AbstractGuessNumber implements IGuessNumber {
         return true;
     }
 
+    protected int[] defineNumber(IGuessNumberProvider numberProvider) {
+        return numberProvider.get();
+    }
+
+    @Override
+    public int[] getDigits() {
+        return digits;
+    }
+
+    /**
+     * only unique digits are allowed
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean isValid() {
+        return this.digits != null && this.digits.length == complexity() && isGuess(this.digits);
+    }
+
+    protected boolean isGuess(int[] array) {
+        return isUnique(array) && isAllDigits(array) && array[0] > 0;
+    }
+
     @Override
     public String toString() {
         return Arrays.toString(this.digits);
     }
 
     @Override
-    public int getComplexity() {
-        return this.numberProvider.getComplexity();
+    public int complexity() {
+        return this.complexity;
     }
 }

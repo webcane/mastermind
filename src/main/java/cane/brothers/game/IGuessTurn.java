@@ -1,8 +1,7 @@
 package cane.brothers.game;
 
-public interface IGuessTurn extends IGuessResult, IGameNumber {
+public interface IGuessTurn extends IGuessResult, IGuessNumber {
 
     boolean isWin();
 
-    boolean isValid();
 }

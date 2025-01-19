@@ -14,11 +14,11 @@ public class GuessGameNumberFactory implements IGuessGameFactory, IGameNumber {
 
     @Override
     public IGuessTurn makeTurn(String number) throws GuessTurnException {
-        if (number == null || number.length() != getComplexity()) {
-            throw new GuessTurnException("The guess should have another length: " + getComplexity());
+        if (number == null || number.length() != complexity()) {
+            throw new GuessTurnException("Guess length must be: " + complexity());
         }
 
-        guess = new GuessNumber(new GuessNumberProvider(number, getComplexity()));
+        guess = new GuessNumber(new GuessNumberProvider(number, complexity()));
         if (guess.isValid()) {
 
             var result = secret.match(guess);
@@ -35,16 +35,16 @@ public class GuessGameNumberFactory implements IGuessGameFactory, IGameNumber {
         }
     }
 
-    protected void setComplexity(int complexity) throws GuessComplexityException {
+    @Override
+    public int complexity() {
+        return complexity;
+    }
+
+    private void setComplexity(int complexity) throws GuessComplexityException {
         if (complexity < 1 || complexity > 9) {
             throw new GuessComplexityException();
         }
         this.complexity = complexity;
-    }
-
-    @Override
-    public int getComplexity() {
-        return complexity;
     }
 
     protected void processTurn() {

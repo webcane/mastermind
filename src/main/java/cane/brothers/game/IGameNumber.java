@@ -1,7 +1,6 @@
 package cane.brothers.game;
 
-interface IGameNumber {
+public interface IGameNumber {
 
-    int getComplexity();
-
+    int complexity();
 }

@@ -29,8 +29,7 @@ class AbstractGuessNumberTest {
                 "ABCD,4",
                 "10000,4",
                 "1234,3",
-                "12345,4",
-                "01234,6"})
+                "12345,4"})
         void test_isValid_neg(String input, String expected) {
             IGuessNumber guess = new GuessNumber(new GuessNumberProvider(input, Integer.parseInt(expected)));
             assertFalse(guess.isValid());
@@ -40,44 +39,70 @@ class AbstractGuessNumberTest {
         @ParameterizedTest
         @CsvSource({"123,3",
                 "1234,4",
-                "0123,4",
                 "12345,5",
                 "12345678,8"})
         void test_isValid_pos(String input, String expected) {
             IGuessNumber guess = new GuessNumber(new GuessNumberProvider(input, Integer.parseInt(expected)));
             assertTrue(guess.isValid());
         }
+
+        @DisplayName("Test GuessNumber.isValid() for positive cases")
+        @ParameterizedTest
+        @CsvSource({"0123,4",
+                "02345,5"})
+        void test_isValid_zero(String input, String expected) {
+            IGuessNumber guess = new GuessNumber(new GuessNumberProvider(input, Integer.parseInt(expected)));
+            assertFalse(guess.isValid());
+        }
     }
 
     @Nested
     class TestIsGuess {
 
-        @DisplayName("Test GuessNumber.isGuess() for null and empty cases")
-        @ParameterizedTest
-        @NullAndEmptySource
-        void test_isGuess_null(String input) {
-            AbstractGuessNumber guess = new GuessNumber(new GuessNumberProvider(input, 4));
-            assertFalse(guess.isGuess());
+        @Test
+        @DisplayName("Test GuessNumber.isGuess() for null")
+        void test_isGuess_null() {
+            AbstractGuessNumber guess = new GuessNumber(new GuessNumberProvider(null, 4));
+            assertFalse(guess.isGuess(null));
         }
 
-        @DisplayName("Test GuessNumber.isGuess() for positive cases")
-        @ParameterizedTest
-        @CsvSource({"1234,4",
-                "0123,4",
-                "12345,5"})
-        void test_isGuess_pos(String input, String expected) {
-            AbstractGuessNumber guess = new GuessNumber(new GuessNumberProvider(input, Integer.parseInt(expected)));
-            assertTrue(guess.isGuess());
+        @Test
+        @DisplayName("Test GuessNumber.isGuess() for empty")
+        void test_isGuess_empty() {
+            AbstractGuessNumber guess = new GuessNumber(new GuessNumberProvider("[]", 4));
+            assertFalse(guess.isGuess(new int[]{}));
         }
 
-        @DisplayName("Test GuessNumber.isGuess() for negative cases")
-        @ParameterizedTest
-        @CsvSource({"1111,4",
-                "ABCD,4",
-                "10000,4"})
-        void test_isGuess_neg(String input, String expected) {
-            AbstractGuessNumber guess = new GuessNumber(new GuessNumberProvider(input, Integer.parseInt(expected)));
-            assertFalse(guess.isGuess());
+        @Test
+        @DisplayName("Test GuessNumber.isGuess() for number started with zero")
+        void test_isGuess_zero() {
+            var answer = new int[]{0, 9, 2, 4};
+            AbstractGuessNumber guess = new GuessNumber(new AnswerNumberProvider(answer));
+            assertFalse(guess.isGuess(answer));
+        }
+
+        @Test
+        @DisplayName("Test GuessNumber.isGuess() for non unique number guess")
+        void test_isGuess_not_unique() {
+            var answer = new int[]{1, 1, 1, 1};
+            AbstractGuessNumber guess = new GuessNumber(new AnswerNumberProvider(answer));
+            assertFalse(guess.isGuess(answer));
+        }
+
+        @Test
+        @DisplayName("Test GuessNumber.isGuess() for non  number guess")
+        void test_isGuess_not_number() {
+            var answer = new int[]{10, 11, 12, 13};
+            AbstractGuessNumber guess = new GuessNumber(new AnswerNumberProvider(answer));
+            assertFalse(guess.isGuess(answer));
+        }
+
+        @Test
+        @DisplayName("Test GuessNumber.isGuess() for guess")
+        void test_isGuess_pos() {
+            var answer = new int[]{1, 9, 2, 4};
+            AbstractGuessNumber guess = new GuessNumber(new AnswerNumberProvider(answer));
+            assertTrue(guess.isGuess(answer));
         }
     }
 
